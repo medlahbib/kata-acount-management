@@ -1,23 +1,26 @@
 package com.sg.accountManagement.service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sg.accountManagement.entity.Client;
 import com.sg.accountManagement.entity.Operation;
-import com.sg.accountManagement.repository.ClientRepository;
-import com.sg.accountManagement.repository.OperationRepository;
+import com.sg.accountManagement.repository.IClientRepository;
+import com.sg.accountManagement.repository.IOperationRepository;
 import com.sg.accountManagement.utils.OperationTypeEnum;
 
 @Service
 public class AccountService implements IAccountService{
 	
 	//the two classes were declared to simulate the repository functions
-	ClientRepository clientRepository;
-	OperationRepository operationRepository;
+	@Autowired
+	IClientRepository clientRepository;
+	
+	@Autowired
+	IOperationRepository operationRepository;
 	
 	/**
 	 * get All Operation By ClientId
