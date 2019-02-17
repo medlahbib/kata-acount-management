@@ -14,4 +14,6 @@ public interface IAccountService {
 
 	void deleteOperations();
 
+	List<Operation> getAllOperations();
+
 }

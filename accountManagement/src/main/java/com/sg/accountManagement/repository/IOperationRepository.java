@@ -7,6 +7,8 @@ import com.sg.accountManagement.entity.Operation;
 public interface IOperationRepository {
 
 
+	List<Operation> findAll();
+	
 	List<Operation> findByIdClient(int id) ;
 
 	void save(Operation operation) ;

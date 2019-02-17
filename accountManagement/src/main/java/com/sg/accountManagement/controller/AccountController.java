@@ -24,15 +24,29 @@ public class AccountController {
 	@Autowired
 	IAccountService accountService;
 
+	
+	/**
+	 * get All Operation 
+	 * 
+	 * @return
+	 */
+	@GetMapping("getAllOperations")
+	public ResponseEntity<List<Operation>> getAllOperations() {
+
+		List<Operation> list =  accountService.getAllOperations();
+
+		return new ResponseEntity<List<Operation>>(list, HttpStatus.OK);
+	}
+	
 	/**
 	 * get All Operation By Client Id
 	 * 
 	 * @param id
 	 * @return
 	 */
-	@GetMapping("getAllOperations/{id}")
+	@PostMapping("getAllOperationsByClientId")
 	public ResponseEntity<List<Operation>> getAllOperationByClientId(
-			@PathVariable int id) {
+			@RequestBody int id) {
 
 		List<Operation> list = null;
 		try {

@@ -23,6 +23,14 @@ public class AccountService implements IAccountService{
 	IOperationRepository operationRepository;
 	
 	/**
+	 * get All Operations
+	 */
+	public List<Operation> getAllOperations() {
+		return operationRepository.findAll();
+	}
+	
+	
+	/**
 	 * get All Operation By ClientId
 	 */
 	public List<Operation> getAllOperationByClientId(int id) {
@@ -60,5 +68,7 @@ public class AccountService implements IAccountService{
 		operationRepository.deleteOperations();
 		
 	}
+
+	
 
 }
