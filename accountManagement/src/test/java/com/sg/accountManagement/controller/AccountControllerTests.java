@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.sg.accountManagement.entity.Client;
 import com.sg.accountManagement.entity.Operation;
 import com.sg.accountManagement.service.IAccountService;
 import com.sg.accountManagement.utils.OperationTypeEnum;
@@ -37,11 +38,12 @@ public class AccountControllerTests {
 
 		// deposit
 		double amount = 200;
-		// the client with id = 2 doesn't have any previous operations
-		int clientId = 2;
-		accountService.deposit(amount,clientId);
+		// the client with username = 2 doesn't have any previous operations
+		String username = "2";
+		Client c = accountService.getClientByUsername(username);
+		accountService.deposit(amount,username);
 		//select operations
-		List<Operation> list = accountService.getAllOperationByClientId(clientId);
+		List<Operation> list = accountService.getAllOperationByClientId((int)c.getId());
 		assertTrue(list.size() == 1);
 		Operation operation = list.get(0);
 		assertTrue(operation.getAmount() == amount);
@@ -58,11 +60,12 @@ public class AccountControllerTests {
 
 		// deposit
 		double amount = 100;
-		// the client with id = 2 doesn't have any previous operations
-		int clientId = 2;
-		accountService.withdrawal(amount, clientId);
+		// the client with username = 2 doesn't have any previous operations
+		String username = "2";
+		Client c = accountService.getClientByUsername(username);
+		accountService.withdrawal(amount, username);
 		//select operations
-		List<Operation> list = accountService.getAllOperationByClientId(clientId);
+		List<Operation> list = accountService.getAllOperationByClientId((int)c.getId());
 		assertTrue(list.size() == 1);
 		Operation operation = list.get(0);
 		assertTrue(operation.getAmount() == amount);
@@ -74,9 +77,9 @@ public class AccountControllerTests {
 	@Test
 	public void testListOperation() throws Exception {
 		
-		accountService.deposit(5000,1);
-		accountService.withdrawal(500,1);
-		accountService.withdrawal(50,1);
+		accountService.deposit(5000,"1");
+		accountService.withdrawal(500,"1");
+		accountService.withdrawal(50,"1");
 		List<Operation> testList = accountService.getAllOperationByClientId(1);
 		assertEquals(3, testList.size());
 

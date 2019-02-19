@@ -40,24 +40,24 @@ public class AccountService implements IAccountService{
 	/**
 	 * deposit 
 	 */
-	public void deposit(double amount,int idClient) {
-		Client client = clientRepository.findById(idClient);
+	public void deposit(double amount,String username) {
+		Client client = clientRepository.getClientByUsername(username);
 		client.setBalance(amount+client.getBalance());
 		clientRepository.update(client);
-		operationRepository.save(new Operation(OperationTypeEnum.DEPOSIT, new Date(), amount, client.getBalance(), idClient));
+		operationRepository.save(new Operation(OperationTypeEnum.DEPOSIT, new Date(), amount, client.getBalance(), username));
 	}
 
 	/**
 	 * withdrawal
 	 */
-	public void withdrawal(double amount,int idClient) throws Exception {
-		Client client = clientRepository.findById(idClient);
+	public void withdrawal(double amount,String username) throws Exception {
+		Client client = clientRepository.getClientByUsername(username);
 		if (client.getBalance()< amount) {
 			throw new Exception("Insufisant Balance");
 		} else {
 			client.setBalance(client.getBalance()-amount);
 			clientRepository.update(client);
-			operationRepository.save(new Operation(OperationTypeEnum.WITHDRAWAL, new Date(), amount, client.getBalance(), idClient));
+			operationRepository.save(new Operation(OperationTypeEnum.WITHDRAWAL, new Date(), amount, client.getBalance(), username));
 		}
 	}
 
@@ -67,6 +67,11 @@ public class AccountService implements IAccountService{
 	public void deleteOperations() {
 		operationRepository.deleteOperations();
 		
+	}
+
+
+	public Client getClientByUsername(String username) {
+		return clientRepository.getClientByUsername(username);
 	}
 
 	

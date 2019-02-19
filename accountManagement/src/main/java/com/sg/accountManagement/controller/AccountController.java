@@ -1,19 +1,21 @@
 package com.sg.accountManagement.controller;
 
+import java.security.Principal;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sg.accountManagement.entity.Client;
 import com.sg.accountManagement.entity.Operation;
 import com.sg.accountManagement.service.IAccountService;
 
@@ -45,12 +47,13 @@ public class AccountController {
 	 * @return
 	 */
 	@PostMapping("getAllOperationsByClientId")
-	public ResponseEntity<List<Operation>> getAllOperationByClientId(
-			@RequestBody int id) {
+	public ResponseEntity<List<Operation>> getAllOperationByClientId(HttpServletRequest  request) {
 
+		Principal principal =  request.getUserPrincipal();
+		Client c = accountService.getClientByUsername(principal.getName());
 		List<Operation> list = null;
 		try {
-			list = accountService.getAllOperationByClientId(id);
+			list = accountService.getAllOperationByClientId((int)c.getId());
 		} catch (Exception e) {
 			return new ResponseEntity<List<Operation>>(list,
 					HttpStatus.NOT_FOUND);
@@ -66,11 +69,12 @@ public class AccountController {
 	 * @return
 	 */
 	@PostMapping("/deposit")
-	public ResponseEntity<Boolean> deposit(@RequestBody Operation operation) {
+	public ResponseEntity<Boolean> deposit(@RequestBody Operation operation,HttpServletRequest request) {
 		try {
+			Principal principal =  request.getUserPrincipal();
 			double amount = operation.getAmount();
-			int idClient = operation.getIdClient();
-			accountService.deposit(amount,idClient);
+			String username = principal.getName();
+			accountService.deposit(amount,username);
 		} catch (Exception e) {
 			return new ResponseEntity<Boolean>(false, HttpStatus.NOT_FOUND);
 		}
@@ -85,12 +89,13 @@ public class AccountController {
 	 * @return
 	 */
 	@PostMapping("/withdrawal")
-	public ResponseEntity<Boolean> withdrawal(@RequestBody Operation operation) {
+	public ResponseEntity<Boolean> withdrawal(@RequestBody Operation operation,HttpServletRequest request) {
 		try {
+			Principal principal =  request.getUserPrincipal();
 			double amount = operation.getAmount();
-			int idClient = operation.getIdClient();
+			String username = principal.getName();
 			try {
-				accountService.withdrawal(amount,idClient);
+				accountService.withdrawal(amount,username);
 			} catch (Exception e) {
 				return new ResponseEntity<Boolean>(false, HttpStatus.EXPECTATION_FAILED);
 			}

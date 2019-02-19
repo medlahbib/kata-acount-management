@@ -9,22 +9,31 @@ public class Operation {
 	private Date date;
 	private double amount;
 	private double balance;
-	private int idClient;
+	private String username;
 	
 	public Operation() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	
+
+	/**
+	 * @param typeOfOperation
+	 * @param date
+	 * @param amount
+	 * @param balance
+	 * @param username
+	 */
 	public Operation(OperationTypeEnum typeOfOperation, Date date,
-			double amount, double balance, int idClient) {
+			double amount, double balance, String username) {
 		super();
 		this.typeOfOperation = typeOfOperation;
 		this.date = date;
 		this.amount = amount;
 		this.balance = balance;
-		this.idClient = idClient;
+		this.username = username;
 	}
+
 
 	public Date getDate() {
 		return date;
@@ -50,18 +59,15 @@ public class Operation {
 	public void setTypeOfOperation(OperationTypeEnum typeOfOperation) {
 		this.typeOfOperation = typeOfOperation;
 	}
-	/**
-	 * @return the idClient
-	 */
-	public int getIdClient() {
-		return idClient;
+
+	public String getUsername() {
+		return username;
 	}
-	/**
-	 * @param idClient the idClient to set
-	 */
-	public void setIdClient(int idClient) {
-		this.idClient = idClient;
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
+
 	
 	
 }
